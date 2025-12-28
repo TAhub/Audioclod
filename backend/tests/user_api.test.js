@@ -19,6 +19,12 @@ describe('users controller', () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
     })
+
+    test('does not expose passwordHash', async () => {
+      const user = (await api.get('/api/users')).body[0]
+      assert.ok(user.username)
+      assert.equal(user.passwordHash, undefined)
+    })
   })
 
   describe('POST', () => {
