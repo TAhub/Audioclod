@@ -51,4 +51,23 @@ usersRouter.delete('/:id', middleware.userExtractor, async (request, response) =
   }
 })
 
+usersRouter.post('/:id/deactivate', middleware.userExtractor, async (request, response) => {
+  const id = parseInt(request.params.id)
+  if (!request.user.admin) {
+    return response.status(403).send({ error: 'Only admins can do this.' })
+  }
+  try {
+    const user = await User.findByPk(id)
+    if (!user) {
+      return response.status(400).send({ error: 'That user does not exist.' })
+    }
+    user.active = false
+    await user.save()
+    return response.status(200).end()
+  } catch (error) {
+    // TODO: interpret any specific errors
+    return response.status(400).json(error)
+  }
+})
+
 module.exports = usersRouter

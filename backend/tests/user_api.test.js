@@ -87,5 +87,31 @@ describe('users controller', () => {
         .delete(`/api/users/${startingUsers.normal.id}`)
         .expect(401)
     })
+
+    test('fails if a deactive user tries to do it', async () => {
+      await api
+        .delete(`/api/users/${startingUsers.deactive.id}`)
+        .set('Authorization', testHelper.getAuthHeaderForUser(startingUsers.deactive))
+        .expect(403)
+    })
+  })
+
+  describe('DEACTIVATE', () => {
+    test('can be done by admins', async () => {
+      await api
+        .post(`/api/users/${startingUsers.normal.id}/deactivate`)
+        .set('Authorization', testHelper.getAuthHeaderForUser(startingUsers.admin))
+        .expect(200)
+      const users = (await api.get('/api/users')).body
+      const user = users.find(user => user.username === startingUsers.normal.username)
+      assert.strictEqual(user.active, false, 'user should have been deactivated')
+    })
+
+    test('cannot be done by normal users', async () => {
+      await api
+        .post(`/api/users/${startingUsers.normal.id}/deactivate`)
+        .set('Authorization', testHelper.getAuthHeaderForUser(startingUsers.normal))
+        .expect(403)
+    })
   })
 })

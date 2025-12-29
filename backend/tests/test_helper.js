@@ -16,10 +16,13 @@ const setupStartingState = async () => {
   // Make the starting users.
   const normal = await makeUser('foo', 'bar')
   const admin = await makeUser('lorem', 'ipsum')
-  // Update the admin to be an admin.
+  const deactive = await makeUser('baz', 'qux')
+  // Update the users to have the correct traits.
   admin.admin = true
   await admin.save()
-  return { normal, admin }
+  deactive.active = false
+  await deactive.save()
+  return { normal, admin, deactive }
 }
 
 const getAuthHeaderForUser = (user) => {

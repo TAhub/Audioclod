@@ -26,6 +26,9 @@ const userExtractor = async (request, response, next) => {
     if (user.username !== decodedToken.username) {
       return response.status(401).send({ error: 'Invalid token.' })
     }
+    if (!user.active) {
+      return response.status(403).send({ error: 'Deactivated users cannot take secure actions.' })
+    }
     request.user = user
     next()
   } catch (error) {
