@@ -10,6 +10,9 @@ usersRouter.get('/', async (request, response) => {
 
 usersRouter.post('/', async (request, response) => {
   const { username, password } = request.body
+  if (username === undefined) {
+    return response.status(400).send({ error: 'No username provided.' })
+  }
   if (password === undefined) {
     return response.status(400).send({ error: 'No password provided.' })
   }
