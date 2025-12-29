@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
-const { User } = require('../models')
+const { User, Asset } = require('../models')
 const bcrypt = require('bcrypt')
 const config = require('../utils/config')
 
@@ -9,10 +9,15 @@ const makeUser = async (username, password) => {
   return await User.create({ username, passwordHash: normalPasswordHash })
 }
 
+const makeAsset = async (name, length) => {
+  return await Asset.create({ contentUri: 'www.fake.com', name, length })
+}
+
 const setupStartingState = async () => {
   // Clear the old values.
   const where = { id: { [Op.gte]: 0 } } // A condition that everything will pass, since this version of sequelize has no "destroyAll"
   await User.destroy({ where })
+  await Asset.destroy({ where })
   // Make the starting users.
   const normal = await makeUser('foo', 'bar')
   const admin = await makeUser('lorem', 'ipsum')
@@ -22,7 +27,13 @@ const setupStartingState = async () => {
   await admin.save()
   deactive.active = false
   await deactive.save()
-  return { normal, admin, deactive }
+  // Make the starting assets.
+  const fewComments = await makeAsset('old boring music', 30)
+  // Return the created values, to simplify some of the tests.
+  return {
+    users: { normal, admin, deactive },
+    assets: { fewComments },
+  }
 }
 
 const getAuthHeaderForUser = (user) => {

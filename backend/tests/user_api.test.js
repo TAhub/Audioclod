@@ -10,7 +10,7 @@ let startingUsers
 
 describe('users controller', () => {
   beforeEach(async () => {
-    startingUsers = await testHelper.setupStartingState()
+    startingUsers = (await testHelper.setupStartingState()).users
   })
 
   describe('GET', () => {

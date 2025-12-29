@@ -13,7 +13,6 @@ Asset.init({
   },
   contentUri: {
     type: DataTypes.TEXT,
-    unique: true,
     allowNull: false
   },
   name: {
