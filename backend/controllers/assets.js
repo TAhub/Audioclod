@@ -23,9 +23,26 @@ assetsRouter.get('/:id/comments', async (request, response) => {
   response.json(comments)
 })
 
-assetsRouter.post('/:id/comment', middleware.userExtractor, async (request, response) => {
-  //const id = parseInt(request.params.id)
-  //const { content, timestamp } = 
+assetsRouter.post('/:id/comments', middleware.userExtractor, async (request, response) => {
+  const id = parseInt(request.params.id)
+  const { content, timestamp } = request.body
+  if (timestamp < 0) {
+    return response.status(400).send({ error: 'Timestamp cannot be negative.' })
+  }
+  const asset = await Asset.findByPk(id)
+  if (asset == null) {
+    return response.status(404).send({ error: 'Timestamps cannot be added to non-assets.' })
+  }
+  if (timestamp > asset.length) {
+    return response.status(400).send({ error: 'Timestamp cannot be after the end of an asset.' })
+  }
+  try {
+    const comment = await Comment.create({ content, timestamp, assetId: id , userId: request.user.id })
+    return response.status(201).json(comment).end()
+  } catch (error) {
+    // TODO: interpret any specific errors
+    return response.status(400).json(error).end()
+  }
 })
 
 module.exports = assetsRouter

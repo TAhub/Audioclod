@@ -35,7 +35,7 @@ describe('users controller', () => {
         username: 'aaaa',
         password: 'bbbb'
       }
-      const result = await api
+      await api
         .post('/api/users')
         .send(newUser)
         .expect(201)

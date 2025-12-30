@@ -7,10 +7,13 @@ const testHelper = require('./test_helper')
 
 const api = supertest(app)
 let startingAssets
+let startingUsers
 
 describe('assets controller', () => {
   beforeEach(async () => {
-    startingAssets = (await testHelper.setupStartingState()).assets
+    const startingState = await testHelper.setupStartingState()
+    startingUsers = startingState.users
+    startingAssets = startingState.assets
   })
 
   describe('GET all', () => {
@@ -37,6 +40,72 @@ describe('assets controller', () => {
       assert.strictEqual(comments.length, 2)
       assert.strictEqual(comments[0].timestamp, 2)
       assert.strictEqual(comments[0].content, 'Comment at 2s')
+    })
+  })
+
+  describe('POST comment', () => {
+    test('creates a comment', async () => {
+      const newComment = {
+        content: 'Hello World',
+        timestamp: 15,
+      }
+      const oldComments = (await api.get(`/api/assets/${startingAssets.fewComments.id}/comments`)).body
+      await api
+        .post(`/api/assets/${startingAssets.fewComments.id}/comments`)
+        .set('Authorization', testHelper.getAuthHeaderForUser(startingUsers.admin))
+        .send(newComment)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+      const newComments = (await api.get(`/api/assets/${startingAssets.fewComments.id}/comments`)).body
+      assert.strictEqual(newComments.length, oldComments.length + 1, 'number of comments did not increase')
+      assert.strictEqual(newComments[newComments.length - 1].content, newComment.content, 'new comment was saved incorrectly')
+    })
+
+    test('does not work if no credentials are applied', async () => {
+      const newComment = {
+        content: 'Hello World',
+        timestamp: 15,
+      }
+      await api
+        .post(`/api/assets/${startingAssets.fewComments.id}/comments`)
+        .send(newComment)
+        .expect(401)
+    })
+
+    test('does not work if the timestamp is before 0s', async () => {
+      const newComment = {
+        content: 'Hello World',
+        timestamp: -10,
+      }
+      await api
+        .post(`/api/assets/${startingAssets.fewComments.id}/comments`)
+        .set('Authorization', testHelper.getAuthHeaderForUser(startingUsers.admin))
+        .send(newComment)
+        .expect(400)
+    })
+
+    test('does not work if the timestamp is after the end of the asset', async () => {
+      const newComment = {
+        content: 'Hello World',
+        timestamp: 999,
+      }
+      await api
+        .post(`/api/assets/${startingAssets.fewComments.id}/comments`)
+        .set('Authorization', testHelper.getAuthHeaderForUser(startingUsers.admin))
+        .send(newComment)
+        .expect(400)
+    })
+
+    test('does not work if the asset does not exist', async () => {
+      const newComment = {
+        content: 'Hello World',
+        timestamp: 15,
+      }
+      await api
+        .post(`/api/assets/${startingAssets.fewComments.id + 100}/comments`)
+        .set('Authorization', testHelper.getAuthHeaderForUser(startingUsers.admin))
+        .send(newComment)
+        .expect(404)
     })
   })
 })
