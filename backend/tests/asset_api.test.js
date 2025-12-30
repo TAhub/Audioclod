@@ -13,12 +13,30 @@ describe('assets controller', () => {
     startingAssets = (await testHelper.setupStartingState()).assets
   })
 
-  describe('GET', () => {
+  describe('GET all', () => {
     test('returns as json', async () => {
       await api
         .get('/api/assets')
         .expect(200)
         .expect('Content-Type', /application\/json/)
+    })
+  })
+
+  describe('GET one', () => {
+    test('returns as json', async () => {
+      await api
+        .get(`/api/assets/${startingAssets.fewComments.id}`)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+    })
+  })
+
+  describe('GET comments', () => {
+    test('gets comments', async () => {
+      const comments = (await api.get(`/api/assets/${startingAssets.fewComments.id}/comments`)).body
+      assert.strictEqual(comments.length, 2)
+      assert.strictEqual(comments[0].timestamp, 2)
+      assert.strictEqual(comments[0].content, 'Comment at 2s')
     })
   })
 })

@@ -1,16 +1,21 @@
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
-const { User, Asset } = require('../models')
+const { User, Asset, Comment } = require('../models')
 const bcrypt = require('bcrypt')
 const config = require('../utils/config')
 
 const makeUser = async (username, password) => {
-  const normalPasswordHash = await bcrypt.hash(password, config.PASSWORD_HASH_SALT_ROUNDS)
-  return await User.create({ username, passwordHash: normalPasswordHash })
+  const passwordHash = await bcrypt.hash(password, config.PASSWORD_HASH_SALT_ROUNDS)
+  return await User.create({ username, passwordHash })
 }
 
-const makeAsset = async (name, length) => {
-  return await Asset.create({ contentUri: 'www.fake.com', name, length })
+const makeAsset = async (name, length, commentTimestamps, user) => {
+  const asset = await Asset.create({ contentUri: 'www.fake.com', name, length })
+  for (const timestamp of commentTimestamps) {
+    const content = `Comment at ${timestamp}s`
+    await Comment.create({ content, timestamp, assetId: asset.id, userId: user.id })
+  }
+  return asset
 }
 
 const setupStartingState = async () => {
@@ -18,6 +23,7 @@ const setupStartingState = async () => {
   const where = { id: { [Op.gte]: 0 } } // A condition that everything will pass, since this version of sequelize has no "destroyAll"
   await User.destroy({ where })
   await Asset.destroy({ where })
+  await Comment.destroy({ where })
   // Make the starting users.
   const normal = await makeUser('foo', 'bar')
   const admin = await makeUser('lorem', 'ipsum')
@@ -28,7 +34,7 @@ const setupStartingState = async () => {
   deactive.active = false
   await deactive.save()
   // Make the starting assets.
-  const fewComments = await makeAsset('old boring music', 30)
+  const fewComments = await makeAsset('old boring music', 30, [2, 10], normal)
   // Return the created values, to simplify some of the tests.
   return {
     users: { normal, admin, deactive },
