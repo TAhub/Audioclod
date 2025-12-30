@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+app.use('/assets', express.static('assets'))
 app.use(express.json())
 app.use(require('./utils/middleware').tokenExtractor)
 app.use('/api/users', require('./controllers/users'))
