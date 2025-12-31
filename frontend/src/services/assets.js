@@ -24,4 +24,16 @@ const get = async (id) => {
   return await response.json()
 }
 
-export default { search, get }
+const getComments = async (id) => {
+  const response = await fetch(baseUrl + '/' + id + '/comments', {
+    method: 'GET',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to get comments')
+  }
+
+  return await response.json()
+}
+
+export default { search, get, getComments }
