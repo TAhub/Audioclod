@@ -1,5 +1,28 @@
 const baseUrl = 'http://localhost:3003/api/'
 
+const getAll = async () => {
+  const response = await fetch(baseUrl + 'users', {
+    method: 'GET'
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to get users')
+  }
+
+  return await response.json()
+}
+
+const deactivate = async (id, token) => {
+  const response = await fetch(baseUrl + 'users/' + id + '/deactivate', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to deactivate')
+  }
+}
+
 const login = async (username, password) => {
   const response = await fetch(baseUrl + 'login', {
     method: 'POST',
@@ -28,4 +51,4 @@ const register = async (username, password) => {
   return await response.json()
 }
 
-export default { login, register }
+export default { login, register, getAll, deactivate }

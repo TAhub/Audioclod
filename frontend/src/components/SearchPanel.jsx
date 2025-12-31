@@ -12,8 +12,6 @@ const AccountPanel = () => {
     return null
   }
 
-  console.log(searchResults)
-
   return (
     <div>
       <div>TODO: search terms</div>

@@ -18,7 +18,7 @@ const accountSlice = createSlice({
 export const login = (username, password) => {
   return async (dispatch, getState) => {
     const response = await accountService.login(username, password)
-    dispatch(setAccount({ username, token: response.token }))
+    dispatch(setAccount(response))
   }
 }
 
