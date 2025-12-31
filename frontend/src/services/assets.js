@@ -12,4 +12,16 @@ const search = async () => {
   return await response.json()
 }
 
-export default { search }
+const get = async (id) => {
+  const response = await fetch(baseUrl + '/' + id, {
+    method: 'GET',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to find asset')
+  }
+
+  return await response.json()
+}
+
+export default { search, get }

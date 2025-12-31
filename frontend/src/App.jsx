@@ -9,6 +9,7 @@ import RegisterForm from './components/RegisterForm'
 import AccountPanel from './components/AccountPanel'
 import SearchPanel from './components/SearchPanel'
 import UsersPanel from './components/UsersPanel'
+import AssetPanel from './components/AssetPanel'
 
 function App() {
   const account = useSelector(state => state.account)
@@ -32,7 +33,7 @@ function App() {
         <Route path="/" element={<div>TODO: home</div>} />
         <Route path="/account" element={account ? <AccountPanel /> : <LoginForm />} />
         <Route path="/assets" element={<SearchPanel />} />
-        <Route path="/assets/:id" element={<div>TODO: asset view</div>} />
+        <Route path="/assets/:id" element={<AssetPanel />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/users" element={<UsersPanel />} />
       </Routes>

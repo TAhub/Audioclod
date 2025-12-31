@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { search } from '../reducers/searchResultsReducer'
 
@@ -26,7 +27,7 @@ const AccountPanel = () => {
         <tbody>
           {searchResults.map(asset =>
             <tr key={asset.id}>
-              <td>{asset.name}</td>
+              <td><Link to={'/assets/' + asset.id}>{asset.name}</Link></td>
               <td>{asset.genre}</td>
               <td>{asset.length + 's'}</td>
             </tr>
