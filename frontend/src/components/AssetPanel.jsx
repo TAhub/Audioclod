@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 import assetsService from '../services/assets'
 import CommentDiv from './CommentDiv'
+import CommentForm from './CommentForm'
 
 const AssetPanel = () => {
   const id = useParams().id
@@ -22,6 +23,11 @@ const AssetPanel = () => {
     return null
   }
 
+  const getTimestamp = () => 0 // TODO: get timestamp from playback
+  const addComment = (newComment) => {
+    setComments([...comments, newComment])
+  }
+
   return (
     <div>
       <h4>{asset.name}</h4>
@@ -32,6 +38,7 @@ const AssetPanel = () => {
           </li>
         )}
       </list>
+      <CommentForm getTimestamp={getTimestamp} addComment={addComment} />
     </div>
   )
 }

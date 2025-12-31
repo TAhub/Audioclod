@@ -35,7 +35,7 @@ const LoginForm = () => {
         <button onClick={handleLoginButton} disabled={disableButton}>Log In</button>
       </div>
       <div>
-        <Link to={'/register'}>Don't have an account? Register!</Link>
+        <Link to="/register">Don't have an account? Register!</Link>
       </div>
     </form>
   )

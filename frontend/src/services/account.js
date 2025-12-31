@@ -26,7 +26,7 @@ const deactivate = async (id, token) => {
 const login = async (username, password) => {
   const response = await fetch(baseUrl + 'login', {
     method: 'POST',
-    headers: {'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   })
 
@@ -40,7 +40,7 @@ const login = async (username, password) => {
 const register = async (username, password) => {
   const response = await fetch(baseUrl + 'users', {
     method: 'POST',
-    headers: {'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   })
 

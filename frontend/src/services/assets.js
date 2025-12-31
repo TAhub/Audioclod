@@ -36,4 +36,21 @@ const getComments = async (id) => {
   return await response.json()
 }
 
-export default { search, get, getComments }
+const comment = async (id, content, timestamp, token) => {
+  const response = await fetch(baseUrl + '/' + id + '/comments', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ content, timestamp })
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to post comment')
+  }
+
+  return await response.json()
+}
+
+export default { search, get, getComments, comment }
