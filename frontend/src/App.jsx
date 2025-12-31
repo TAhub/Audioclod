@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 
 import LoginForm from './components/LoginForm'
 import AccountPanel from './components/AccountPanel'
+import SearchPanel from './components/SearchPanel'
 
 function App() {
   const login = useSelector(state => state.login)
@@ -22,7 +23,7 @@ function App() {
       <Routes>
         <Route path="/" element={<div>TODO: home</div>} />
         <Route path="/account" element={login ? <AccountPanel /> : <LoginForm />} />
-        <Route path="/assets" element={<div>TODO: asset search</div>} />
+        <Route path="/assets" element={<SearchPanel />} />
         <Route path="/assets/:id" element={<div>TODO: asset view</div>} />
       </Routes>
     </Router>

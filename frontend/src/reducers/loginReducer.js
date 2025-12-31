@@ -10,7 +10,7 @@ const loginSlice = createSlice({
       return action.payload
     },
     clearLogin(state, action) {
-      return ''
+      return null
     },
   },
 })

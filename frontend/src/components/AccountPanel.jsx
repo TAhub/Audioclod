@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { clearLogin } from '../reducers/loginReducer'
 
 const AccountPanel = () => {
+  const dispatch = useDispatch()
   const login = useSelector(state => state.login)
 
   const handleLogoutButton = (event) => {
