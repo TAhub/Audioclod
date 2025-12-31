@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import assetsService from '../services/assets'
 
 const searchResultsSlice = createSlice({
-  name: 'login',
+  name: 'searchResults',
   initialState: null,
   reducers: {
     setSearchResults(state, action) {

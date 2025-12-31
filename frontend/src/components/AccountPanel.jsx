@@ -1,19 +1,19 @@
 import { useSelector, useDispatch } from 'react-redux'
 
-import { clearLogin } from '../reducers/loginReducer'
+import { clearAccount } from '../reducers/accountReducer'
 
 const AccountPanel = () => {
   const dispatch = useDispatch()
-  const login = useSelector(state => state.login)
+  const account = useSelector(state => state.account)
 
   const handleLogoutButton = (event) => {
     event.preventDefault()
-    dispatch(clearLogin())
+    dispatch(clearAccount())
   }
 
   return (
     <div>
-      <h4>{login.username}</h4>
+      <h4>{account.username}</h4>
       <button onClick={handleLogoutButton}>Log Out</button>
     </div>
   )
