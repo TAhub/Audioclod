@@ -4,13 +4,7 @@ const { Model, DataTypes } = require('sequelize')
 // TODO: add validation (min and max length for username, etc)
 // TODO: if I add asset creation: add bool flag "uploadInProcess"
 
-class User extends Model {
-  toJSON() {
-    const json = super.toJSON()
-    delete json.passwordHash
-    return json
-  }
-}
+class User extends Model {}
 User.init({
   id: {
     type: DataTypes.INTEGER,
@@ -38,7 +32,10 @@ User.init({
   sequelize,
   underscored: true,
   timestamps: false,
-  modelName: 'user'
+  modelName: 'user',
+  defaultScope: {
+    attributes: { exclude: ['passwordHash'] },
+  }
 })
 
 module.exports = User

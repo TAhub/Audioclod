@@ -12,7 +12,10 @@ loginRouter.post('/', async (request, response) => {
   if (!password) {
     return response.status(401).send({ error: 'No password provided.' })
   }
-  const user = await User.findOne({ where: { username } })
+  // Note that loading the User "unscoped" like this does load the passwordHash,
+  // instead of hiding it...
+  // So this user object shouldn't leave this method!
+  const user = await User.unscoped().findOne({ where: { username } })
   if (!user) {
     return response.status(401).send({ error: 'Invalid username or password.' })
   }

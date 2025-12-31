@@ -1,5 +1,5 @@
 const assetsRouter = require('express').Router()
-const { Asset, Comment } = require('../models')
+const { Asset, Comment, User } = require('../models')
 const middleware = require('../utils/middleware')
 
 assetsRouter.get('/', async (request, response) => {
@@ -18,6 +18,10 @@ assetsRouter.get('/:id/comments', async (request, response) => {
   const comments = await Comment.findAll({
     where: {
       asset_id: id
+    },
+    include: {
+      model: User,
+      as: 'user',
     },
   })
   response.json(comments)
@@ -38,7 +42,13 @@ assetsRouter.post('/:id/comments', middleware.userExtractor, async (request, res
   }
   try {
     const comment = await Comment.create({ content, timestamp, assetId: id , userId: request.user.id })
-    return response.status(201).json(comment).end()
+    // To reduce the number of queries the frontend needs to make,
+    // this joins the user onto the result before posting.
+    // It does not appear that doing a "manual join" of the data here is possible, so instead
+    // we manipulate the JSON before returning it.
+    const commentJson = comment.toJSON()
+    commentJson.user = request.user.toJSON()
+    return response.status(201).json(commentJson).end()
   } catch (error) {
     // TODO: interpret any specific errors
     return response.status(400).json(error).end()
