@@ -3,8 +3,8 @@ import { useState, useRef, useEffect } from 'react'
 import Shaka from 'shaka-player'
 
 import assetsService from '../services/assets'
-import CommentDiv from './CommentDiv'
 import CommentForm from './CommentForm'
+import DynamicCommentList from './DynamicCommentList'
 
 const AssetPanel = () => {
   const id = useParams().id
@@ -58,13 +58,7 @@ const AssetPanel = () => {
     <div>
       <h4>{asset.name}</h4>
       <audio controls ref={mediaElement} />
-      <list>
-        {comments.map(comment =>
-          <li id={comment.id}>
-            <CommentDiv comment={comment} />
-          </li>
-        )}
-      </list>
+      <DynamicCommentList getTimestamp={getTimestamp} comments={comments} />
       <CommentForm getTimestamp={getTimestamp} addComment={addComment} />
     </div>
   )
