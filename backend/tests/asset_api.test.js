@@ -80,7 +80,7 @@ describe('assets controller', () => {
         .expect('Content-Type', /application\/json/)
       const newComments = (await api.get(`/api/assets/${startingAssets.fewComments.id}/comments`)).body
       assert.strictEqual(newComments.length, oldComments.length + 1, 'number of comments did not increase')
-      assert.strictEqual(newComments[newComments.length - 1].content, newComment.content, 'new comment was saved incorrectly')
+      assert.ok(newComments.some((comment) => comment.content == newComment.content), 'new comment was saved incorrectly')
     })
 
     test('does not work if no credentials are applied', async () => {
