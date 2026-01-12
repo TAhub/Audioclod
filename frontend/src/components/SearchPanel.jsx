@@ -9,6 +9,7 @@ const AccountPanel = ({ homePanelMode }) => {
   const dispatch = useDispatch()
   const [nameSearchTerm, setNameSearchTerm] = useState('')
   const searchResults = useSelector(state => state.searchResults)
+  const [page, setPage] = useState(0)
   const startSearchTimer = useCallback(debounce(() => {
     dispatch(clearSearchResults())
   }, 500), [])
@@ -16,14 +17,27 @@ const AccountPanel = ({ homePanelMode }) => {
   useEffect(() => {
     const newPopular = homePanelMode
     const newNameSearchTerm = newPopular ? '' : nameSearchTerm
-    if (shouldSearchAgain(searchResults, newNameSearchTerm, newPopular)) {
-      dispatch(search(newNameSearchTerm, newPopular))
+    const newPage = newPopular ? 0 : page
+    if (shouldSearchAgain(searchResults, newNameSearchTerm, newPopular, newPage)) {
+      dispatch(search(newNameSearchTerm, newPopular, newPage))
     }
   }, [searchResults, homePanelMode])
 
   const handleNameSearchTermChange = (event) => {
     setNameSearchTerm(event.target.value)
+    setPage(0)
     startSearchTimer()
+  }
+
+  const makePageChangeButton = (delta) => {
+    return (event) => {
+      event.preventDefault()
+      const newPage = Math.max(0, page + delta)
+      if (newPage != page) {
+        setPage(newPage)
+        startSearchTimer()
+      }
+    }
   }
 
   return (
@@ -55,6 +69,11 @@ const AccountPanel = ({ homePanelMode }) => {
           ) : null}
         </tbody>
       </table>
+      <form>
+        <button onClick={makePageChangeButton(-1)} disabled={page <= 0}>{"<"}</button>
+        Page {page + 1}
+        <button onClick={makePageChangeButton(1)}>{">"}</button>
+      </form>
     </div>
   )
 }

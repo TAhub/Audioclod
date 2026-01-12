@@ -6,6 +6,7 @@ const initialState = {
   assets: null,
   lastNameSearchTerm: '',
   lastPopular: false,
+  lastPage: 0,
 }
 
 const searchResultsSlice = createSlice({
@@ -21,20 +22,21 @@ const searchResultsSlice = createSlice({
   },
 })
 
-export const search = (nameSearchTerm, popular) => {
+export const search = (nameSearchTerm, popular, page) => {
   return async (dispatch, getState) => {
     dispatch(clearSearchResults())
-    const response = await assetsService.search(nameSearchTerm, popular)
+    const response = await assetsService.search(nameSearchTerm, popular, page)
     dispatch(setSearchResults({
       assets: response,
       lastNameSearchTerm: nameSearchTerm,
       lastPopular: popular,
+      lastPage: page,
     }))
   }
 }
 
-export const shouldSearchAgain = (state, nameSearchTerm, popular) => {
-  return state.assets == null || state.lastNameSearchTerm != nameSearchTerm || state.lastPopular != popular
+export const shouldSearchAgain = (state, nameSearchTerm, popular, page) => {
+  return state.assets == null || state.lastNameSearchTerm != nameSearchTerm || state.lastPopular != popular || state.lastPage != page
 }
 
 export const { setSearchResults, clearSearchResults } = searchResultsSlice.actions
