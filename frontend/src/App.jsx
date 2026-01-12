@@ -30,9 +30,9 @@ function App() {
         {showAdmin ? <Link style={linkStyle} to="/users">Users</Link> : null}
       </div>
       <Routes>
-        <Route path="/" element={<div>TODO: home</div>} />
+        <Route path="/" element={<SearchPanel homePanelMode={true} />} />
         <Route path="/account" element={account ? <AccountPanel /> : <LoginForm />} />
-        <Route path="/assets" element={<SearchPanel />} />
+        <Route path="/assets" element={<SearchPanel homePanelMode={false} />} />
         <Route path="/assets/:id" element={<AssetPanel />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/users" element={<UsersPanel />} />

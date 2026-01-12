@@ -1,16 +1,19 @@
 const baseUrl = 'http://localhost:3003/api/assets'
 
-const search = async (nameSearchTerm) => {
+const search = async (nameSearchTerm, popular) => {
   const searchTerms = []
   if (nameSearchTerm) {
     searchTerms.push('name=' + nameSearchTerm)
+  }
+  if (popular) {
+    searchTerms.push('popular=1')
   }
   let searchUrl = baseUrl
   if (searchTerms.length > 0) {
     searchUrl += '?' + searchTerms.join('&')
   }
-  console.log(searchUrl)
 
+  console.log('Searching:', searchUrl)
   const response = await fetch(searchUrl, {
     method: 'GET',
   })

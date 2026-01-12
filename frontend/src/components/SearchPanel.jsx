@@ -3,9 +3,9 @@ import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { debounce } from 'lodash'
 
-import { search, clearSearchResults } from '../reducers/searchResultsReducer'
+import { search, clearSearchResults, shouldSearchAgain } from '../reducers/searchResultsReducer'
 
-const AccountPanel = () => {
+const AccountPanel = ({ homePanelMode }) => {
   const dispatch = useDispatch()
   const [nameSearchTerm, setNameSearchTerm] = useState('')
   const searchResults = useSelector(state => state.searchResults)
@@ -14,12 +14,12 @@ const AccountPanel = () => {
   }, 500), [])
 
   useEffect(() => {
-    // searchResults being an empty array means "no results"
-    // searchResults being null means "must perform search"
-    if (!searchResults) {
-      dispatch(search(nameSearchTerm))
+    const newPopular = homePanelMode
+    const newNameSearchTerm = newPopular ? '' : nameSearchTerm
+    if (shouldSearchAgain(searchResults, newNameSearchTerm, newPopular)) {
+      dispatch(search(newNameSearchTerm, newPopular))
     }
-  }, [searchResults])
+  }, [searchResults, homePanelMode])
 
   const handleNameSearchTermChange = (event) => {
     setNameSearchTerm(event.target.value)
@@ -28,27 +28,29 @@ const AccountPanel = () => {
 
   return (
     <div>
-      <form>
+      {homePanelMode ? null : <form>
         <div>
           <label>
             Name <input type="text" value={nameSearchTerm} onChange={handleNameSearchTermChange} />
           </label>
         </div>
-      </form>
+      </form>}
       <table>
         <thead>
           <tr>
             <th>Title</th>
             <th>Genre</th>
             <th>Length</th>
+            <th>Comments</th>
           </tr>
         </thead>
         <tbody>
-          {searchResults ? searchResults.map(asset =>
+          {searchResults.assets ? searchResults.assets.map(asset =>
             <tr key={asset.id}>
               <td><Link to={'/assets/' + asset.id}>{asset.name}</Link></td>
               <td>{asset.genre}</td>
               <td>{asset.length + 's'}</td>
+              <td>{asset.numComments}</td>
             </tr>
           ) : null}
         </tbody>
