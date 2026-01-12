@@ -22,7 +22,43 @@ describe('assets controller', () => {
         .get('/api/assets')
         .expect(200)
         .expect('Content-Type', /application\/json/)).body
-       assert.strictEqual(assets.length, 3)
+       assert.strictEqual(assets.length, 4)
+    })
+
+    test('can show further pages', async () => {
+      const assets = (await api
+        .get('/api/assets?page=1')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)).body
+       assert.strictEqual(assets.length, 1)
+    })
+  })
+
+  describe('GET popular', () => {
+    test('returns correct number of assets', async () => {
+      const assets = (await api
+        .get('/api/assets?popular=1')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)).body
+      assert.strictEqual(assets.length, 4)
+    })
+
+    test('returns assets in descending order of comments', async () => {
+      const assets = (await api
+        .get('/api/assets?popular=1')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)).body
+      let lastNumComments = Infinity
+      for (const asset of assets) {
+        assert.ok(asset.numComments <= lastNumComments, `comment order was not descending (${asset.numComments} > ${lastNumComments})`)
+        lastNumComments = asset.numComments
+      }
+    })
+
+    test('cannot be combined with other queries', async () => {
+      await api
+        .get('/api/assets?popular=1&name=new')
+        .expect(400)
     })
   })
 
@@ -32,7 +68,7 @@ describe('assets controller', () => {
         .get('/api/assets?name=new')
         .expect(200)
         .expect('Content-Type', /application\/json/)).body
-       assert.strictEqual(newAssets.length, 1)
+      assert.strictEqual(newAssets.length, 1)
       const oldAssets = (await api
         .get('/api/assets?name=old')
         .expect(200)

@@ -10,7 +10,7 @@ const makeUser = async (username, password) => {
 }
 
 const makeAsset = async (name, length, commentTimestamps, user) => {
-  const asset = await Asset.create({ contentUri: 'www.fake.com', name, length })
+  const asset = await Asset.create({ contentUri: 'www.fake.com', name, length, numComments: commentTimestamps.length })
   for (const timestamp of commentTimestamps) {
     const content = `Comment at ${timestamp}s`
     await Comment.create({ content, timestamp, assetId: asset.id, userId: user.id })
@@ -36,11 +36,13 @@ const setupStartingState = async () => {
   // Make the starting assets.
   const fewComments = await makeAsset('old boring music', 30, [2, 10], normal)
   const manyComments = await makeAsset('new fun music', 20, [2, 5, 10, 18], normal)
+  const veryManyComments = await makeAsset('trendy music', 20, [2, 5, 10, 18, 12, 7, 3, 1, 1, 2], normal)
   const noComments = await makeAsset('very old boring music', 60, [], normal)
+  const oneComment = await makeAsset('indie music', 15, [1], normal)
   // Return the created values, to simplify some of the tests.
   return {
     users: { normal, admin, deactive },
-    assets: { fewComments, manyComments, noComments },
+    assets: { fewComments, manyComments, veryManyComments, noComments, oneComment },
   }
 }
 

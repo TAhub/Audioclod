@@ -23,6 +23,10 @@ Asset.init({
     type: DataTypes.INTEGER,
     allowNull: false
   },
+  numComments: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
 }, {
   sequelize,
   underscored: true,
