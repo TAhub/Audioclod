@@ -1,21 +1,40 @@
 import { useSelector, useDispatch } from 'react-redux'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import { debounce } from 'lodash'
 
-import { search } from '../reducers/searchResultsReducer'
+import { search, clearSearchResults } from '../reducers/searchResultsReducer'
 
 const AccountPanel = () => {
   const dispatch = useDispatch()
+  const [nameSearchTerm, setNameSearchTerm] = useState('')
   const searchResults = useSelector(state => state.searchResults)
+  const startSearchTimer = useCallback(debounce(() => {
+    dispatch(clearSearchResults())
+  }, 500), [])
 
-  if (!searchResults) {
-    // TODO: add searching...
-    dispatch(search())
-    return null
+  useEffect(() => {
+    // searchResults being an empty array means "no results"
+    // searchResults being null means "must perform search"
+    if (!searchResults) {
+      dispatch(search(nameSearchTerm))
+    }
+  }, [searchResults])
+
+  const handleNameSearchTermChange = (event) => {
+    setNameSearchTerm(event.target.value)
+    startSearchTimer()
   }
 
   return (
     <div>
-      <div>TODO: search terms</div>
+      <form>
+        <div>
+          <label>
+            Name <input type="text" value={nameSearchTerm} onChange={handleNameSearchTermChange} />
+          </label>
+        </div>
+      </form>
       <table>
         <thead>
           <tr>
@@ -25,13 +44,13 @@ const AccountPanel = () => {
           </tr>
         </thead>
         <tbody>
-          {searchResults.map(asset =>
+          {searchResults ? searchResults.map(asset =>
             <tr key={asset.id}>
               <td><Link to={'/assets/' + asset.id}>{asset.name}</Link></td>
               <td>{asset.genre}</td>
               <td>{asset.length + 's'}</td>
             </tr>
-          )}
+          ) : null}
         </tbody>
       </table>
     </div>

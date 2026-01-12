@@ -15,9 +15,9 @@ const searchResultsSlice = createSlice({
   },
 })
 
-export const search = () => {
+export const search = (nameSearchTerm) => {
   return async (dispatch, getState) => {
-    const response = await assetsService.search()
+    const response = await assetsService.search(nameSearchTerm)
     dispatch(setSearchResults(response))
   }
 }
