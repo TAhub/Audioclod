@@ -1,9 +1,22 @@
 const assetsRouter = require('express').Router()
+const { Op } = require('sequelize')
 const { Asset, Comment, User } = require('../models')
 const middleware = require('../utils/middleware')
 
 assetsRouter.get('/', async (request, response) => {
-  const assets = await Asset.findAll()
+  let assets
+  if (request.query.name) {
+    const nameSearch = '%' + request.query.name + '%'
+    assets = await Asset.findAll({
+      where: {
+        name: {
+          [Op.iLike]: nameSearch,
+        },
+      },
+    })
+  } else {
+    assets = await Asset.findAll()
+  }
   response.json(assets)
 })
 

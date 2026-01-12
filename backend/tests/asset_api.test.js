@@ -17,13 +17,35 @@ describe('assets controller', () => {
   })
 
   describe('GET all', () => {
-    test('returns as json', async () => {
-      await api
+    test('returns correct number of assets', async () => {
+      const assets = (await api
         .get('/api/assets')
         .expect(200)
-        .expect('Content-Type', /application\/json/)
+        .expect('Content-Type', /application\/json/)).body
+       assert.strictEqual(assets.length, 3)
     })
   })
+
+  describe('GET query', () => {
+    test('returns correct number of assets', async () => {
+      const newAssets = (await api
+        .get('/api/assets?name=new')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)).body
+       assert.strictEqual(newAssets.length, 1)
+      const oldAssets = (await api
+        .get('/api/assets?name=old')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)).body
+       assert.strictEqual(oldAssets.length, 2)
+      const noAssets = (await api
+        .get('/api/assets?name=blorpity')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)).body
+       assert.strictEqual(noAssets.length, 0)
+    })
+  })
+
 
   describe('GET one', () => {
     test('returns as json', async () => {

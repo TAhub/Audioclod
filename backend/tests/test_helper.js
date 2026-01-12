@@ -35,10 +35,12 @@ const setupStartingState = async () => {
   await deactive.save()
   // Make the starting assets.
   const fewComments = await makeAsset('old boring music', 30, [2, 10], normal)
+  const manyComments = await makeAsset('new fun music', 20, [2, 5, 10, 18], normal)
+  const noComments = await makeAsset('very old boring music', 60, [], normal)
   // Return the created values, to simplify some of the tests.
   return {
     users: { normal, admin, deactive },
-    assets: { fewComments },
+    assets: { fewComments, manyComments, noComments },
   }
 }
 
