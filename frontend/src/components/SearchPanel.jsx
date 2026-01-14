@@ -69,11 +69,11 @@ const AccountPanel = ({ homePanelMode }) => {
           ) : null}
         </tbody>
       </table>
-      <form>
+      {homePanelMode ? null : <form>
         <button onClick={makePageChangeButton(-1)} disabled={page <= 0}>{"<"}</button>
         Page {page + 1}
         <button onClick={makePageChangeButton(1)}>{">"}</button>
-      </form>
+      </form>}
     </div>
   )
 }
