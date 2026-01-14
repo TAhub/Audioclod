@@ -1,6 +1,6 @@
 const baseUrl = 'http://localhost:3003/api/assets'
 
-const search = async (nameSearchTerm, popular, page) => {
+const search = async (nameSearchTerm, popular, page, pageSize) => {
   const searchTerms = []
   if (nameSearchTerm) {
     searchTerms.push('name=' + nameSearchTerm)
@@ -10,6 +10,9 @@ const search = async (nameSearchTerm, popular, page) => {
   }
   if (page > 0) {
     searchTerms.push('page=' + page)
+  }
+  if (pageSize > 0) {
+    searchTerms.push('pageSize=' + pageSize)
   }
   let searchUrl = baseUrl
   if (searchTerms.length > 0) {

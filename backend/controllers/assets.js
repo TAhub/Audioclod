@@ -6,7 +6,7 @@ const middleware = require('../utils/middleware')
 assetsRouter.get('/', async (request, response) => {
   const where = {}
   const order = []
-  const limit = 4
+  const limit = request.query.pageSize || 1
   let offset = 0
   if (request.query.name) {
     const nameSearch = '%' + request.query.name + '%'
@@ -24,7 +24,7 @@ assetsRouter.get('/', async (request, response) => {
     // For a one-man solo project, we are looking at the most commented assets, right now.
     order.push(['numComments', 'DESC'])
   }
-  const assets = await Asset.findAll({ where, order, limit, offset })
+  const assets = await Asset.findAndCountAll({ where, order, limit, offset })
   response.json(assets)
 })
 

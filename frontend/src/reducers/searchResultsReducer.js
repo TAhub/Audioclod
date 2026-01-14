@@ -4,9 +4,11 @@ import assetsService from '../services/assets'
 
 const initialState = {
   assets: null,
+  assetCount: 0,
   lastNameSearchTerm: '',
   lastPopular: false,
   lastPage: 0,
+  lastPageSize: 0,
 }
 
 const searchResultsSlice = createSlice({
@@ -22,21 +24,26 @@ const searchResultsSlice = createSlice({
   },
 })
 
-export const search = (nameSearchTerm, popular, page) => {
+export const search = (nameSearchTerm, popular, page, pageSize) => {
   return async (dispatch, getState) => {
     dispatch(clearSearchResults())
-    const response = await assetsService.search(nameSearchTerm, popular, page)
+    const response = await assetsService.search(nameSearchTerm, popular, page, pageSize)
     dispatch(setSearchResults({
-      assets: response,
+      assets: response.rows,
+      assetCount: response.count,
       lastNameSearchTerm: nameSearchTerm,
       lastPopular: popular,
       lastPage: page,
+      lastPageSize: pageSize,
     }))
   }
 }
 
-export const shouldSearchAgain = (state, nameSearchTerm, popular, page) => {
-  return state.assets == null || state.lastNameSearchTerm != nameSearchTerm || state.lastPopular != popular || state.lastPage != page
+export const shouldSearchAgain = (state, nameSearchTerm, popular, page, pageSize) => {
+  if (state.assets == null) {
+    return true
+  }
+  return state.lastNameSearchTerm != nameSearchTerm || state.lastPopular != popular || state.lastPage != page || state.lastPageSize != pageSize
 }
 
 export const { setSearchResults, clearSearchResults } = searchResultsSlice.actions

@@ -9,8 +9,9 @@ import { search, clearSearchResults, shouldSearchAgain } from '../reducers/searc
 const AccountPanel = ({ homePanelMode }) => {
   const dispatch = useDispatch()
   const [nameSearchTerm, setNameSearchTerm] = useState('')
+  const pageSize = 4 // TODO: const...
   const searchResults = useSelector(state => state.searchResults)
-  const maxPage = 10
+  const maxPage = Math.ceil((searchResults.assetCount) / pageSize)
   const [page, setPage] = useState(1)
   const startSearchTimer = useCallback(debounce(() => {
     dispatch(clearSearchResults())
@@ -20,8 +21,8 @@ const AccountPanel = ({ homePanelMode }) => {
     const newPopular = homePanelMode
     const newNameSearchTerm = newPopular ? '' : nameSearchTerm
     const newPage = (newPopular ? 0 : page) - 1
-    if (shouldSearchAgain(searchResults, newNameSearchTerm, newPopular, newPage)) {
-      dispatch(search(newNameSearchTerm, newPopular, newPage))
+    if (shouldSearchAgain(searchResults, newNameSearchTerm, newPopular, newPage, pageSize)) {
+      dispatch(search(newNameSearchTerm, newPopular, newPage, pageSize))
     }
   }, [searchResults, homePanelMode])
 
