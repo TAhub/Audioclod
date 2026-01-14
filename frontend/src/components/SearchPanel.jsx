@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { debounce } from 'lodash'
-import { Pagination } from '@mantine/core'
+import { Pagination, TextInput } from '@mantine/core'
 
 import { search, clearSearchResults, shouldSearchAgain } from '../reducers/searchResultsReducer'
 
@@ -40,13 +40,7 @@ const AccountPanel = ({ homePanelMode }) => {
 
   return (
     <div>
-      {homePanelMode ? null : <form>
-        <div>
-          <label>
-            Name <input type="text" value={nameSearchTerm} onChange={handleNameSearchTermChange} />
-          </label>
-        </div>
-      </form>}
+      {homePanelMode ? null : <TextInput placeholder="Search" value={nameSearchTerm} onChange={handleNameSearchTermChange} />}
       <table>
         <thead>
           <tr>

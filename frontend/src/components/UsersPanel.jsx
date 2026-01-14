@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
+import { Button } from '@mantine/core'
 
 import accountService from '../services/account'
 
@@ -44,7 +45,7 @@ const UsersPanel = () => {
               <td>{user.admin ? 'YES' : 'NO'}</td>
               <td>{user.active ? 'YES' : 'NO'}</td>
               <td>
-                <button onClick={() => disableUser(user)} disabled={!user.active}>Deactivate</button>
+                <Button onClick={() => disableUser(user)} data-disabled={!user.active}>Deactivate</Button>
               </td>
             </tr>
           )}

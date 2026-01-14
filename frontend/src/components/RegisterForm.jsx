@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { TextInput, Button } from '@mantine/core'
 
 import { register } from '../reducers/accountReducer'
 
@@ -15,7 +16,7 @@ const RegisterForm = () => {
     navigate('/')
   }
 
-  const handleLoginButton = (event) => {
+  const handleRegisterButton = (event) => {
     event.preventDefault()
     // TODO: validate or disable button until username and password are filled
     dispatch(register(username, password))
@@ -26,19 +27,11 @@ const RegisterForm = () => {
   const disableButton = !username || !password
 
   return (
-    <form>
-      <div>
-        <label>
-          Username <input type="text" value={username} onChange={event => setUsername(event.target.value)} />
-        </label>
-      </div>
-      <div>
-        <label>
-          Password <input type="text" value={password} onChange={event => setPassword(event.target.value)} />
-        </label>
-      </div>
-      <button onClick={handleLoginButton} disabled={disableButton}>Log In</button>
-    </form>
+    <>
+      <TextInput label="Username" value={username} onChange={event => setUsername(event.target.value)} />
+      <TextInput label="Password" value={password} onChange={event => setPassword(event.target.value)} />
+      <Button onClick={handleRegisterButton} data-disabled={disableButton}>Register</Button>
+    </>
   )
 }
 
