@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
-import { Button } from '@mantine/core'
+import { Button, Table } from '@mantine/core'
 
 import accountService from '../services/account'
 
@@ -28,30 +28,28 @@ const UsersPanel = () => {
   }
 
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>username</th>
-            <th>admin</th>
-            <th>active</th>
-            <th>actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user =>
-            <tr key={user.id}>
-              <td>{user.username}</td>
-              <td>{user.admin ? 'YES' : 'NO'}</td>
-              <td>{user.active ? 'YES' : 'NO'}</td>
-              <td>
-                <Button onClick={() => disableUser(user)} data-disabled={!user.active}>Deactivate</Button>
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+    <Table>
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th>username</Table.Th>
+          <Table.Th>admin</Table.Th>
+          <Table.Th>active</Table.Th>
+          <Table.Th>actions</Table.Th>
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>
+        {users.map(user =>
+          <Table.Tr key={user.id}>
+            <Table.Td>{user.username}</Table.Td>
+            <Table.Td>{user.admin ? 'YES' : 'NO'}</Table.Td>
+            <Table.Td>{user.active ? 'YES' : 'NO'}</Table.Td>
+            <Table.Td>
+              <Button onClick={() => disableUser(user)} data-disabled={!user.active}>Deactivate</Button>
+            </Table.Td>
+          </Table.Tr>
+        )}
+      </Table.Tbody>
+    </Table>
   )
 }
 

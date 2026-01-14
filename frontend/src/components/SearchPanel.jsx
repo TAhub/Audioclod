@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { debounce } from 'lodash'
-import { Pagination, TextInput } from '@mantine/core'
+import { Pagination, TextInput, Table } from '@mantine/core'
 
 import { search, clearSearchResults, shouldSearchAgain } from '../reducers/searchResultsReducer'
 
@@ -41,26 +41,26 @@ const AccountPanel = ({ homePanelMode }) => {
   return (
     <div>
       {homePanelMode ? null : <TextInput placeholder="Search" value={nameSearchTerm} onChange={handleNameSearchTermChange} />}
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Genre</th>
-            <th>Length</th>
-            <th>Comments</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Title</Table.Th>
+            <Table.Th>Genre</Table.Th>
+            <Table.Th>Length</Table.Th>
+            <Table.Th>Comments</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
           {searchResults.assets ? searchResults.assets.map(asset =>
-            <tr key={asset.id}>
-              <td><Link to={'/assets/' + asset.id}>{asset.name}</Link></td>
-              <td>{asset.genre}</td>
-              <td>{asset.length + 's'}</td>
-              <td>{asset.numComments}</td>
-            </tr>
+            <Table.Tr key={asset.id}>
+              <Table.Td><Link to={'/assets/' + asset.id}>{asset.name}</Link></Table.Td>
+              <Table.Td>{asset.genre}</Table.Td>
+              <Table.Td>{asset.length + 's'}</Table.Td>
+              <Table.Td>{asset.numComments}</Table.Td>
+            </Table.Tr>
           ) : null}
-        </tbody>
-      </table>
+        </Table.Tbody>
+      </Table>
       {homePanelMode ? null : <Pagination total={maxPage} value={page} onChange={setPageAndSearch} />}
     </div>
   )
