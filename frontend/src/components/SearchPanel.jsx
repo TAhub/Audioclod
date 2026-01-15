@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { debounce } from 'lodash'
-import { Pagination, TextInput, Table } from '@mantine/core'
+import { Pagination, TextInput, Table, NavLink } from '@mantine/core'
 
 import { search, clearSearchResults, shouldSearchAgain } from '../reducers/searchResultsReducer'
 
@@ -54,7 +54,7 @@ const AccountPanel = ({ homePanelMode }) => {
         <Table.Tbody>
           {searchResults.assets ? searchResults.assets.map(asset =>
             <Table.Tr key={asset.id}>
-              <Table.Td><Link to={'/assets/' + asset.id}>{asset.name}</Link></Table.Td>
+              <Table.Td><NavLink to={'/assets/' + asset.id} component={Link} label={asset.name} /></Table.Td>
               <Table.Td>{asset.genre}</Table.Td>
               <Table.Td>{asset.length + 's'}</Table.Td>
               <Table.Td>{asset.numComments}</Table.Td>
