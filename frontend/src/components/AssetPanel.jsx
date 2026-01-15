@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
 import Shaka from 'shaka-player'
+import { Title, Divider } from '@mantine/core'
 
 import assetsService from '../services/assets'
 import CommentForm from './CommentForm'
@@ -56,9 +57,10 @@ const AssetPanel = () => {
 
   return (
     <div>
-      <h4>{asset.name}</h4>
+      <Title order={3}>{asset.name}</Title>
       <audio controls ref={mediaElement} />
       <DynamicCommentList getTimestamp={getTimestamp} comments={comments} />
+      <Divider />
       <CommentForm getTimestamp={getTimestamp} addComment={addComment} />
     </div>
   )

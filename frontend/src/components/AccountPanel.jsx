@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { Button } from '@mantine/core'
+import { Button, Title } from '@mantine/core'
 
 import { clearAccount } from '../reducers/accountReducer'
 
@@ -14,7 +14,7 @@ const AccountPanel = () => {
 
   return (
     <div>
-      <h4>{account.username}</h4>
+      <Title order={3}>{account.username}</Title>
       <Button onClick={handleLogoutButton}>Log Out</Button>
     </div>
   )

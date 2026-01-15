@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { TextInput, Button } from '@mantine/core'
+import { TextInput, Button, Title } from '@mantine/core'
 
 import assetsService from '../services/assets'
 
@@ -14,7 +14,7 @@ const CommentForm = ({ getTimestamp, addComment }) => {
   if (!account) {
     return (
       <>
-        <h4>Post a comment?</h4>
+        <Title order={3}>Post a comment?</Title>
         <Link to="/account">You have to Log In before you can comment!</Link>
       </>
     )
@@ -32,7 +32,7 @@ const CommentForm = ({ getTimestamp, addComment }) => {
 
   return (
     <>
-      <h4>Post a comment?</h4>
+      <Title order={3}>Post a comment?</Title>
       <div>
         <TextInput placeholder="Type your comment!" value={content} onChange={event => setContent(event.target.value)} />
         <Button onClick={handleCommentButton} data-disabled={disableButton}>Post Comment</Button>
