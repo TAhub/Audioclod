@@ -11,7 +11,7 @@ import DynamicCommentList from './DynamicCommentList'
 
 const AssetPanel = () => {
   const dispatch = useDispatch()
-  const id = useParams().id
+  const id = useParams().assetId
   const [asset, setAsset] = useState(null)
   const [comments, setComments] = useState(null)
   const [player, setPlayer] = useState(new Shaka.Player())

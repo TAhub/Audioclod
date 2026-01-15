@@ -6,7 +6,7 @@ import { Pagination, TextInput, Table, NavLink } from '@mantine/core'
 
 import { search, clearSearchResults, shouldSearchAgain } from '../reducers/searchResultsReducer'
 
-const AccountPanel = ({ homePanelMode }) => {
+const AccountPanel = ({ homePanelMode, userForUserPanelMode }) => {
   const dispatch = useDispatch()
   const [nameSearchTerm, setNameSearchTerm] = useState('')
   const pageSize = 4 // TODO: const...
@@ -16,8 +16,11 @@ const AccountPanel = ({ homePanelMode }) => {
   const startSearchTimer = useCallback(debounce(() => {
     dispatch(clearSearchResults())
   }, 500), [])
+  const showSearch = !homePanelMode && !userForUserPanelMode
+  const showPagination = !homePanelMode
 
   useEffect(() => {
+    // TODO: set up a search based on userForUserPanelMode
     const newPopular = homePanelMode
     const newNameSearchTerm = newPopular ? '' : nameSearchTerm
     const newPage = (newPopular ? 0 : page) - 1
@@ -39,9 +42,18 @@ const AccountPanel = ({ homePanelMode }) => {
     }
   }
 
+  let navBase = ''
+  if (homePanelMode) {
+    navBase = '/home/'
+  } else if (userForUserPanelMode) {
+    navBase = '/users/' + userForUserPanelMode.id + '/'
+  } else {
+    navBase = '/assets/'
+  }
+
   return (
     <div>
-      {homePanelMode ? null : <TextInput placeholder="Search" value={nameSearchTerm} onChange={handleNameSearchTermChange} />}
+      {showSearch ? <TextInput placeholder="Search" value={nameSearchTerm} onChange={handleNameSearchTermChange} /> : null}
       <Table>
         <Table.Thead>
           <Table.Tr>
@@ -54,7 +66,7 @@ const AccountPanel = ({ homePanelMode }) => {
         <Table.Tbody>
           {searchResults.assets ? searchResults.assets.map(asset =>
             <Table.Tr key={asset.id}>
-              <Table.Td><NavLink to={(homePanelMode ? '/home/' : '/assets/') + asset.id} component={Link} label={asset.name} /></Table.Td>
+              <Table.Td><NavLink to={navBase + asset.id} component={Link} label={asset.name} /></Table.Td>
               <Table.Td>{asset.genre}</Table.Td>
               <Table.Td>{asset.length + 's'}</Table.Td>
               <Table.Td>{asset.numComments}</Table.Td>
@@ -62,7 +74,7 @@ const AccountPanel = ({ homePanelMode }) => {
           ) : null}
         </Table.Tbody>
       </Table>
-      {homePanelMode ? null : <Pagination total={maxPage} value={page} onChange={setPageAndSearch} />}
+      {showPagination ? <Pagination total={maxPage} value={page} onChange={setPageAndSearch} /> : null}
     </div>
   )
 }

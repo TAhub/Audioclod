@@ -9,8 +9,9 @@ import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
 import AccountPanel from './components/AccountPanel'
 import SearchPanel from './components/SearchPanel'
-import UsersPanel from './components/UsersPanel'
+import AdminPanel from './components/AdminPanel'
 import AssetPanel from './components/AssetPanel'
+import UserPanel from './components/UserPanel'
 
 function App() {
   const account = useSelector(state => state.account)
@@ -20,9 +21,10 @@ function App() {
   const inHome = useMatch('/')
   const inLogin = useMatch('/account')
   const inSearch = useMatch('/assets')
-  const inAdmin = useMatch('/users')
-  const inAsset = useMatch('/assets/:id')
-  const inHomeAsset = useMatch('/home/:id')
+  const inAdmin = useMatch('/admin')
+  const inUser = useMatch('/users/:userId')
+  const inAsset = useMatch('/assets/:assetId')
+  const inHomeAsset = useMatch('/home/:assetId')
   const inRegister = useMatch('/register')
 
   // Technically, a user could short-circuit this, in order to see the admin tab.
@@ -56,17 +58,18 @@ function App() {
         {inRegister ? <NavLink label="Register" active={true} leftSection={registerIcon} component={Link} to="/register" /> : null}
         <NavLink label="Search" active={inSearch || inAsset} component={Link} to="/assets" />
         {inAsset ? <NavLink label={assetDetails.name} leftSection={assetIcon} active={true} component={Link} to={inAsset.pathname} /> : null}
-        {showAdmin ? <NavLink label="Admin Console" active={inAdmin} component={Link} to="/users" /> : null}
+        {showAdmin ? <NavLink label="Admin Console" active={inAdmin} component={Link} to="/admin" /> : null}
       </AppShell.Navbar>
       <AppShell.Main>
         <Routes>
           <Route path="/" element={<SearchPanel homePanelMode={true} />} />
           <Route path="/account" element={account ? <AccountPanel /> : <LoginForm />} />
           <Route path="/assets" element={<SearchPanel homePanelMode={false} />} />
-          <Route path="/assets/:id" element={<AssetPanel />} />
-          <Route path="/home/:id" element={<AssetPanel />} />
+          <Route path="/assets/:assetId" element={<AssetPanel />} />
+          <Route path="/home/:assetId" element={<AssetPanel />} />
           <Route path="/register" element={<RegisterForm />} />
-          <Route path="/users" element={<UsersPanel />} />
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/users/:userId" element={<UserPanel />} />
         </Routes>
       </AppShell.Main>
     </AppShell>
