@@ -12,6 +12,18 @@ const getAll = async () => {
   return await response.json()
 }
 
+const get = async (id) => {
+  const response = await fetch(baseUrl + 'users/' + id, {
+    method: 'GET'
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to get users')
+  }
+
+  return await response.json()
+}
+
 const deactivate = async (id, token) => {
   const response = await fetch(baseUrl + 'users/' + id + '/deactivate', {
     method: 'POST',
@@ -51,4 +63,4 @@ const register = async (username, password) => {
   return await response.json()
 }
 
-export default { login, register, getAll, deactivate }
+export default { login, register, getAll, get, deactivate }

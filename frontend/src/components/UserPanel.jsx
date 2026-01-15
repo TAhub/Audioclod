@@ -1,19 +1,24 @@
 import { Title, Group } from '@mantine/core'
 import { useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
 import SearchPanel from './SearchPanel'
 import UserAvatar from './UserAvatar'
+import accountService from '../services/account'
 
 const UserPanel = ({ user, extraElement }) => {
-  let derivedUser = user
-  if (!user) {
-    const id = useParams().userId
-    console.log('fetching user data at', id)
-    // TODO: fetch user data
+  const [derivedUser, setDerivedUser] = useState(user)
+  const id = useParams().userId
+  useEffect(() => {
+    if (!user) {
+      accountService.get(id).then(result => {
+        setDerivedUser(result)
+      })
+    }
+  }, [user])
+  if (!derivedUser) {
     return null
   }
-  
-  // TODO: show avatar (re-use code from comment div...) in group with the name
   return (
     <div>
       <Group>
