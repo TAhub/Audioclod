@@ -5,7 +5,7 @@ import Shaka from 'shaka-player'
 import { Title, Divider } from '@mantine/core'
 
 import assetsService from '../services/assets'
-import { registerAssetDetails } from '../reducers/assetDetailsReducer'
+import { registerActiveViewDetails } from '../reducers/activeViewDetailsReducer'
 import CommentForm from './CommentForm'
 import DynamicCommentList from './DynamicCommentList'
 
@@ -42,7 +42,7 @@ const AssetPanel = () => {
     assetsService.get(id).then(result => {
       setAsset(result)
       // Also store some basic details, so other panels can see them.
-      dispatch(registerAssetDetails(result.name))
+      dispatch(registerActiveViewDetails({name: result.name}))
     })
     return null
   }
