@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { TextInput, Button } from '@mantine/core'
+import { TextInput, PasswordInput, Button } from '@mantine/core'
 
 import { register } from '../reducers/accountReducer'
 
@@ -29,7 +29,7 @@ const RegisterForm = () => {
   return (
     <>
       <TextInput label="Username" value={username} onChange={event => setUsername(event.target.value)} />
-      <TextInput label="Password" value={password} onChange={event => setPassword(event.target.value)} />
+      <PasswordInput label="Password" value={password} onChange={event => setPassword(event.target.value)} />
       <Button onClick={handleRegisterButton} data-disabled={disableButton}>Register</Button>
     </>
   )
