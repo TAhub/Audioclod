@@ -2,7 +2,7 @@ import {
   Routes, Route, useNavigate, useMatch, Link,
 } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { AppShell, Title, NavLink } from '@mantine/core'
+import { AppShell, Title, NavLink, Group } from '@mantine/core'
 import { IconVinyl, IconRegistered } from '@tabler/icons-react'
 
 import LoginForm from './components/LoginForm'
@@ -31,7 +31,7 @@ function App() {
   const showAdmin = account && account.admin
 
   const header = {
-    height: 80,
+    height: 50,
   }
   const navbar = {
     width: 200,
@@ -44,8 +44,10 @@ function App() {
   return (
     <AppShell padding="md" header={header} navbar={navbar}>
       <AppShell.Header>
-        <Title order={1}>AUDIOCLOD</Title>
-        <Title order={3}>A learning project made by Theodore Abshire</Title>
+        <Group>
+          <Title order={1}>AUDIOCLOD</Title>
+          <Title order={3}>A learning project made by Theodore Abshire</Title>
+        </Group>
       </AppShell.Header>
       <AppShell.Navbar>
         <NavLink label="Home" active={inHome || inHomeAsset} component={Link} to="/" />
