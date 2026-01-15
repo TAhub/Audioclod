@@ -46,7 +46,7 @@ const AccountPanel = ({ homePanelMode, userForUserPanelMode }) => {
   if (homePanelMode) {
     navBase = '/home/'
   } else if (userForUserPanelMode) {
-    navBase = '/users/' + userForUserPanelMode.id + '/'
+    navBase = '/users/' + userForUserPanelMode.id + '/assets/'
   } else {
     navBase = '/assets/'
   }

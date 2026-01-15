@@ -25,6 +25,7 @@ function App() {
   const inUser = useMatch('/users/:userId')
   const inAsset = useMatch('/assets/:assetId')
   const inHomeAsset = useMatch('/home/:assetId')
+  const inUserAsset = useMatch('/home/:userId/assets/:assetId')
   const inRegister = useMatch('/register')
 
   // Technically, a user could short-circuit this, in order to see the admin tab.
@@ -70,6 +71,7 @@ function App() {
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/users/:userId" element={<UserPanel />} />
+          <Route path="/users/:userId/assets/:assetId" element={<AssetPanel />} />
         </Routes>
       </AppShell.Main>
     </AppShell>
