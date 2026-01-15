@@ -54,7 +54,7 @@ const AccountPanel = ({ homePanelMode }) => {
         <Table.Tbody>
           {searchResults.assets ? searchResults.assets.map(asset =>
             <Table.Tr key={asset.id}>
-              <Table.Td><NavLink to={'/assets/' + asset.id} component={Link} label={asset.name} /></Table.Td>
+              <Table.Td><NavLink to={(homePanelMode ? '/home/' : '/assets/') + asset.id} component={Link} label={asset.name} /></Table.Td>
               <Table.Td>{asset.genre}</Table.Td>
               <Table.Td>{asset.length + 's'}</Table.Td>
               <Table.Td>{asset.numComments}</Table.Td>

@@ -13,12 +13,16 @@ import AssetPanel from './components/AssetPanel'
 
 function App() {
   const account = useSelector(state => state.account)
+  const assetDetails = useSelector(state => state.assetDetails)
   const navigate = useNavigate()
   // TODO: if I update to the new version of React Router, this won't be necessary:
   const inHome = useMatch('/')
   const inLogin = useMatch('/account')
   const inSearch = useMatch('/assets')
   const inAdmin = useMatch('/users')
+  const inAsset = useMatch('/assets/:id')
+  const inHomeAsset = useMatch('/home/:id')
+  const inRegister = useMatch('/register')
 
   // Technically, a user could short-circuit this, in order to see the admin tab.
   // However, they can't actually perform any admin actions, so even if they do it's
@@ -41,9 +45,12 @@ function App() {
         <Title order={3}>A learning project made by Theodore Abshire</Title>
       </AppShell.Header>
       <AppShell.Navbar>
-        <NavLink label="Home" active={inHome} component={Link} to="/" />
-        <NavLink label={account ? 'Account' : 'Log In'} active={inLogin} component={Link} to="/account" />
-        <NavLink label="Search" active={inSearch} component={Link} to="/assets" />
+        <NavLink label="Home" active={inHome || inHomeAsset} component={Link} to="/" />
+        {inHomeAsset ? <NavLink label={assetDetails.name} active={true} component={Link} to={inHomeAsset.pathname} /> : null}
+        <NavLink label={account ? 'Account' : 'Log In'} active={inLogin || inRegister} component={Link} to="/account" />
+        {inRegister ? <NavLink label="Register" active={true} component={Link} to="/register" /> : null}
+        <NavLink label="Search" active={inSearch || inAsset} component={Link} to="/assets" />
+        {inAsset ? <NavLink label={assetDetails.name} active={true} component={Link} to={inAsset.pathname} /> : null}
         {showAdmin ? <NavLink label="Admin Console" active={inAdmin} component={Link} to="/users" /> : null}
       </AppShell.Navbar>
       <AppShell.Main>
@@ -52,6 +59,7 @@ function App() {
           <Route path="/account" element={account ? <AccountPanel /> : <LoginForm />} />
           <Route path="/assets" element={<SearchPanel homePanelMode={false} />} />
           <Route path="/assets/:id" element={<AssetPanel />} />
+          <Route path="/home/:id" element={<AssetPanel />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/users" element={<UsersPanel />} />
         </Routes>

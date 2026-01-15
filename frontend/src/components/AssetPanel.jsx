@@ -1,13 +1,16 @@
 import { useParams } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import Shaka from 'shaka-player'
 import { Title, Divider } from '@mantine/core'
 
 import assetsService from '../services/assets'
+import { registerAssetDetails } from '../reducers/assetDetailsReducer'
 import CommentForm from './CommentForm'
 import DynamicCommentList from './DynamicCommentList'
 
 const AssetPanel = () => {
+  const dispatch = useDispatch()
   const id = useParams().id
   const [asset, setAsset] = useState(null)
   const [comments, setComments] = useState(null)
@@ -36,9 +39,11 @@ const AssetPanel = () => {
   }, [preload, mediaElement, mediaElement.current])
 
   if (!asset) {
-    assetsService.get(id).then(result =>
+    assetsService.get(id).then(result => {
       setAsset(result)
-    )
+      // Also store some basic details, so other panels can see them.
+      dispatch(registerAssetDetails(result.name))
+    })
     return null
   }
   if (!comments) {
