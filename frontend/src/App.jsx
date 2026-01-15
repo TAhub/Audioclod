@@ -1,5 +1,5 @@
 import {
-  Routes, Route, useNavigate, useMatch,
+  Routes, Route, useNavigate, useMatch, Link,
 } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { AppShell, Title, NavLink } from '@mantine/core'
@@ -33,9 +33,6 @@ function App() {
     breakpoint: 'sm',
     collapsed: { mobile: false, desktop: false },
   }
-  const makeNav = (url) => {
-    return () => navigate(url)
-  }
 
   return (
     <AppShell padding="md" header={header} navbar={navbar}>
@@ -44,10 +41,10 @@ function App() {
         <Title order={3}>A learning project made by Theodore Abshire</Title>
       </AppShell.Header>
       <AppShell.Navbar>
-        <NavLink label="Home" active={inHome} onClick={makeNav('/')} />
-        <NavLink label={account ? 'Account' : 'Log In'} active={inLogin} onClick={makeNav('/account')} />
-        <NavLink label="Search" active={inSearch} onClick={makeNav('/assets')} />
-        {showAdmin ? <NavLink label="Admin Console" active={inAdmin} onClick={makeNav('/users')} /> : null}
+        <NavLink label="Home" active={inHome} component={Link} to="/" />
+        <NavLink label={account ? 'Account' : 'Log In'} active={inLogin} component={Link} to="/account" />
+        <NavLink label="Search" active={inSearch} component={Link} to="/assets" />
+        {showAdmin ? <NavLink label="Admin Console" active={inAdmin} component={Link} to="/users" /> : null}
       </AppShell.Navbar>
       <AppShell.Main>
         <Routes>
