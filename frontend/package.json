@@ -13,6 +13,7 @@
     "@mantine/core": "^8.3.12",
     "@mantine/hooks": "^8.3.12",
     "@reduxjs/toolkit": "^2.11.2",
+    "@tabler/icons-react": "^3.36.1",
     "lodash": "^4.17.21",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

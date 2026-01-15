@@ -3,6 +3,7 @@ import {
 } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { AppShell, Title, NavLink } from '@mantine/core'
+import { IconVinyl, IconRegistered } from '@tabler/icons-react'
 
 import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
@@ -37,6 +38,8 @@ function App() {
     breakpoint: 'sm',
     collapsed: { mobile: false, desktop: false },
   }
+  const assetIcon = <IconVinyl size={16} stroke={1.5} />
+  const registerIcon = <IconRegistered size={16} stroke={1.5} />
 
   return (
     <AppShell padding="md" header={header} navbar={navbar}>
@@ -46,11 +49,11 @@ function App() {
       </AppShell.Header>
       <AppShell.Navbar>
         <NavLink label="Home" active={inHome || inHomeAsset} component={Link} to="/" />
-        {inHomeAsset ? <NavLink label={assetDetails.name} active={true} component={Link} to={inHomeAsset.pathname} /> : null}
+        {inHomeAsset ? <NavLink label={assetDetails.name} leftSection={assetIcon} active={true} component={Link} to={inHomeAsset.pathname} /> : null}
         <NavLink label={account ? 'Account' : 'Log In'} active={inLogin || inRegister} component={Link} to="/account" />
-        {inRegister ? <NavLink label="Register" active={true} component={Link} to="/register" /> : null}
+        {inRegister ? <NavLink label="Register" active={true} leftSection={registerIcon} component={Link} to="/register" /> : null}
         <NavLink label="Search" active={inSearch || inAsset} component={Link} to="/assets" />
-        {inAsset ? <NavLink label={assetDetails.name} active={true} component={Link} to={inAsset.pathname} /> : null}
+        {inAsset ? <NavLink label={assetDetails.name} leftSection={assetIcon} active={true} component={Link} to={inAsset.pathname} /> : null}
         {showAdmin ? <NavLink label="Admin Console" active={inAdmin} component={Link} to="/users" /> : null}
       </AppShell.Navbar>
       <AppShell.Main>
