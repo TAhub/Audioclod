@@ -15,6 +15,9 @@ assetsRouter.get('/', async (request, response) => {
   if (request.query.page) {
     offset = request.query.page * limit
   }
+  if (request.query.user) {
+    where['userId'] = request.query.user
+  }
   if (request.query.popular) {
     if (request.query.name) {
       return response.status(400).send({ error: 'Popular tab cannot be filtered.' })

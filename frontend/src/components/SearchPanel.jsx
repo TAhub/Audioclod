@@ -20,12 +20,12 @@ const AccountPanel = ({ homePanelMode, userForUserPanelMode }) => {
   const showPagination = !homePanelMode
 
   useEffect(() => {
-    // TODO: set up a search based on userForUserPanelMode
+    const newUser = userForUserPanelMode?.id ?? 0
     const newPopular = homePanelMode
     const newNameSearchTerm = newPopular ? '' : nameSearchTerm
     const newPage = (newPopular ? 0 : page) - 1
-    if (shouldSearchAgain(searchResults, newNameSearchTerm, newPopular, newPage, pageSize)) {
-      dispatch(search(newNameSearchTerm, newPopular, newPage, pageSize))
+    if (shouldSearchAgain(searchResults, newNameSearchTerm, newPopular, newUser, newPage, pageSize)) {
+      dispatch(search(newNameSearchTerm, newPopular, newUser, newPage, pageSize))
     }
   }, [searchResults, homePanelMode])
 
