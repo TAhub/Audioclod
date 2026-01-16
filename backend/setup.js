@@ -19,7 +19,7 @@ const comment = async (asset, content, timestamp, user) => {
 }
 
 const setupStartingState = async () => {
-  console.log('Started initial state setup!')
+  console.log('### Started initial state setup!')
 
   // Clear the old values.
   const where = { id: { [Op.gte]: 0 } } // A condition that everything will pass, since this version of sequelize has no "destroyAll"
@@ -52,7 +52,7 @@ const setupStartingState = async () => {
   await comment(asset5, 'Uh, totally!', 5, musicfan)
   await comment(asset5, 'Right...', 8, admin)
 
-  console.log('Finished initial state setup!')
+  console.log('### Finished initial state setup!')
 }
 
 module.exports = {

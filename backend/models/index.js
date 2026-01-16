@@ -3,12 +3,14 @@ const Asset = require('./asset')
 const Comment = require('./comment')
 
 const setup = async () => {
-  console.log('Started syncing models!')
+  console.log('### Started syncing models!')
 
   // Sync the models up.
   await User.sync()
   await Asset.sync()
   await Comment.sync()
+
+  console.log('### Adding foreign keys!')
 
   // Add links to the models.
   Comment.belongsTo(User)
@@ -21,7 +23,7 @@ const setup = async () => {
   await Asset.sync()
   await Comment.sync()
 
-  console.log('Finished syncing models!')
+  console.log('### Finished syncing models!')
 }
 const setupPromise = setup()
 
