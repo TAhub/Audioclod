@@ -19,6 +19,6 @@ const setup = async () => {
   await Asset.sync()
   await Comment.sync()
 }
-setup()
+const setupPromise = setup()
 
-module.exports = { User, Asset, Comment }
+module.exports = { User, Asset, Comment, setupPromise }
