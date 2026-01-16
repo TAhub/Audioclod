@@ -3,6 +3,8 @@ const Asset = require('./asset')
 const Comment = require('./comment')
 
 const setup = async () => {
+  console.log('Started syncing models!')
+
   // Sync the models up.
   await User.sync()
   await Asset.sync()
@@ -18,7 +20,9 @@ const setup = async () => {
   await User.sync()
   await Asset.sync()
   await Comment.sync()
-}
-setup()
 
-module.exports = { User, Asset, Comment }
+  console.log('Finished syncing models!')
+}
+const setupPromise = setup()
+
+module.exports = { User, Asset, Comment, setupPromise }
