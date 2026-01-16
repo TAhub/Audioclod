@@ -21,6 +21,11 @@ const AssetPanel = () => {
   // Start loading the content.
   useEffect(() => {
     if (!preload && asset) {
+      // TODO: load the actual license server from the asset,
+      // rather than using this hardcoded one:
+      player.configure('drm.servers', {
+        'com.widevine.alpha': 'https://cwip-shaka-proxy.appspot.com/no_auth'
+      })
       player.preload(asset.contentUri).then((manager) => {
         setPreload(manager)
       })
