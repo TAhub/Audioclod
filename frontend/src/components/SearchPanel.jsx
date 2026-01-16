@@ -19,6 +19,7 @@ const AccountPanel = ({ homePanelMode, userForUserPanelMode }) => {
   }, 500), [])
   const showSearch = !homePanelMode && !userForUserPanelMode
   const showPagination = !homePanelMode
+  const hasGenres = searchResults.assets?.some((asset) => asset.genre) ?? false
 
   useEffect(() => {
     const newUser = userForUserPanelMode?.id ?? 0
@@ -60,7 +61,7 @@ const AccountPanel = ({ homePanelMode, userForUserPanelMode }) => {
           <Table.Tr>
             <Table.Th>Title</Table.Th>
             {userForUserPanelMode ? null : <Table.Th>Posted By</Table.Th>}
-            <Table.Th>Genre</Table.Th>
+            {hasGenres ? <Table.Th>Genre</Table.Th> : null}
             <Table.Th>Length</Table.Th>
             <Table.Th>Comments</Table.Th>
           </Table.Tr>
@@ -77,9 +78,9 @@ const AccountPanel = ({ homePanelMode, userForUserPanelMode }) => {
                   <Text size="md">{asset.user.username}</Text>
                 </Group>
               </Table.Td>}
-              <Table.Td>
+              {hasGenres ? <Table.Td>
                 <Text size="md">{asset.genre}</Text>
-              </Table.Td>
+              </Table.Td> : null}
               <Table.Td>
                 <Text size="md">{asset.length + 's'}</Text>
               </Table.Td>
