@@ -8,7 +8,6 @@ const chooseCommentsToShow = (comments, timestamp) => {
   // Filter the comments by distance to the current timestamp; don't show stuff that
   // is after the current timestamp, or too far before.
   for (const comment of comments) {
-    displayedComments[comment.id] = true // TODO: temp
     if (comment.timestamp <= timestamp) {
       const age = timestamp - comment.timestamp
       if (age <= 5) {
