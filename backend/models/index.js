@@ -5,13 +5,6 @@ const Comment = require('./comment')
 const setup = async () => {
   console.log('### Started syncing models!')
 
-  // Sync the models up.
-  await User.sync()
-  await Asset.sync()
-  await Comment.sync()
-
-  console.log('### Adding foreign keys!')
-
   // Add links to the models.
   Comment.belongsTo(User)
   Comment.belongsTo(Asset)
