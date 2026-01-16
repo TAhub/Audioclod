@@ -33,10 +33,8 @@ const CommentForm = ({ getTimestamp, addComment }) => {
   return (
     <>
       <Title order={3}>Post a comment?</Title>
-      <div>
-        <TextInput placeholder="Type your comment!" value={content} onChange={event => setContent(event.target.value)} />
-        <Button onClick={handleCommentButton} data-disabled={disableButton}>Post Comment</Button>
-      </div>
+      <TextInput placeholder="Type your comment!" maw={700} value={content} onChange={event => setContent(event.target.value)} />
+      <Button onClick={handleCommentButton} data-disabled={disableButton}>Post Comment</Button>
     </>
   )
 }

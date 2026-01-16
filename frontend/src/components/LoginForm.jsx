@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { TextInput, PasswordInput, Button } from '@mantine/core'
+import { TextInput, PasswordInput, Button, Box } from '@mantine/core'
 
 import { login } from '../reducers/accountReducer'
 
@@ -21,14 +21,14 @@ const LoginForm = () => {
   const disableButton = !username || !password
 
   return (
-    <>
+    <Box maw={500}>
       <TextInput label="Username" value={username} onChange={event => setUsername(event.target.value)} />
       <PasswordInput label="Password" value={password} onChange={event => setPassword(event.target.value)} />
       <Button onClick={handleLoginButton} data-disabled={disableButton}>Log In</Button>
       <div>
         <Link to="/register">Don't have an account? Register!</Link>
       </div>
-    </>
+    </Box>
   )
 }
 

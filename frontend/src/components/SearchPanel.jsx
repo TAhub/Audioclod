@@ -55,7 +55,7 @@ const AccountPanel = ({ homePanelMode, userForUserPanelMode }) => {
 
   return (
     <div>
-      {showSearch ? <TextInput placeholder="Search" value={nameSearchTerm} onChange={handleNameSearchTermChange} /> : null}
+      {showSearch ? <TextInput placeholder="Search" maw={600} value={nameSearchTerm} onChange={handleNameSearchTermChange} /> : null}
       <Table>
         <Table.Thead>
           <Table.Tr>
