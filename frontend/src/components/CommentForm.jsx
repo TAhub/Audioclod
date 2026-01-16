@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { TextInput, Button, Title } from '@mantine/core'
+import { TextInput, Button, Title, Text, Group } from '@mantine/core'
 
 import assetsService from '../services/assets'
+import UserAvatar from './UserAvatar'
 
 const CommentForm = ({ getTimestamp, addComment }) => {
   const id = useParams().id
@@ -34,7 +35,11 @@ const CommentForm = ({ getTimestamp, addComment }) => {
     <>
       <Title order={3}>Post a comment?</Title>
       <TextInput placeholder="Type your comment!" maw={700} value={content} onChange={event => setContent(event.target.value)} />
-      <Button onClick={handleCommentButton} data-disabled={disableButton}>Post Comment</Button>
+      <Group>
+        <Button onClick={handleCommentButton} data-disabled={disableButton}>Post Comment</Button>
+        <Text size="sm">Posting as</Text>
+        <UserAvatar user={account} />
+      </Group>
     </>
   )
 }
