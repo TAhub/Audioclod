@@ -27,7 +27,11 @@ assetsRouter.get('/', async (request, response) => {
     // For a one-man solo project, we are looking at the most commented assets, right now.
     order.push(['numComments', 'DESC'])
   }
-  const assets = await Asset.findAndCountAll({ where, order, limit, offset })
+  const include = {
+    model: User,
+    as: 'user',
+  }
+  const assets = await Asset.findAndCountAll({ where, order, limit, offset, include })
   response.json(assets)
 })
 

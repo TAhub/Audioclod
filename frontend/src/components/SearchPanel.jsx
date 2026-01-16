@@ -2,9 +2,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { debounce } from 'lodash'
-import { Pagination, TextInput, Table, NavLink } from '@mantine/core'
+import { Pagination, TextInput, Table, NavLink, Group, Text } from '@mantine/core'
 
 import { search, clearSearchResults, shouldSearchAgain } from '../reducers/searchResultsReducer'
+import UserAvatar from './UserAvatar'
 
 const AccountPanel = ({ homePanelMode, userForUserPanelMode }) => {
   const dispatch = useDispatch()
@@ -58,6 +59,7 @@ const AccountPanel = ({ homePanelMode, userForUserPanelMode }) => {
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Title</Table.Th>
+            {userForUserPanelMode ? null : <Table.Th>Posted By</Table.Th>}
             <Table.Th>Genre</Table.Th>
             <Table.Th>Length</Table.Th>
             <Table.Th>Comments</Table.Th>
@@ -66,10 +68,24 @@ const AccountPanel = ({ homePanelMode, userForUserPanelMode }) => {
         <Table.Tbody>
           {searchResults.assets ? searchResults.assets.map(asset =>
             <Table.Tr key={asset.id}>
-              <Table.Td><NavLink to={navBase + asset.id} component={Link} label={asset.name} /></Table.Td>
-              <Table.Td>{asset.genre}</Table.Td>
-              <Table.Td>{asset.length + 's'}</Table.Td>
-              <Table.Td>{asset.numComments}</Table.Td>
+              <Table.Td>
+                <NavLink to={navBase + asset.id} component={Link} label={asset.name} />
+              </Table.Td>
+              {userForUserPanelMode ? null : <Table.Td>
+                <Group>
+                  <UserAvatar user={asset.user} isLink={true} />
+                  <Text size="md">{asset.user.username}</Text>
+                </Group>
+              </Table.Td>}
+              <Table.Td>
+                <Text size="md">{asset.genre}</Text>
+              </Table.Td>
+              <Table.Td>
+                <Text size="md">{asset.length + 's'}</Text>
+              </Table.Td>
+              <Table.Td>
+                <Text size="md">{asset.numComments}</Text>
+              </Table.Td>
             </Table.Tr>
           ) : null}
         </Table.Tbody>
